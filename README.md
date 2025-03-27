@@ -60,8 +60,40 @@ curl -X POST http://127.0.0.1:5000/predict \
 }
 ```
 
+### 4. Configure Google Cloud
+I create a project on Google Cloud and enable the Cloud Run API and Artifact Registry API.
+
+### 5. Containerize the application
+I use Docker to containerize the application.
+I use gcloud init, gcloud build submit to create the image and gcloud run deploy to deploy the container to Google Cloud Run.
+
+### 6. Build and deploy the container to Google Cloud Run
+I obtain this URL:
+> https://mlops-app-675097283493.europe-west9.run.app/
+
+### 7. I can test the API with the url, and I can create a streamit app.
+
+
 ## Tech Stack
 - Python
 - Flask
 - Docker
 - Google Cloud
+
+
+## Nouvelle approche: artefact registry (il faut activer le service sur GCP)
+### Commencez par créer un dossier dans l'artefact registry
+
+### Définir les variables
+PROJECT_ID="deployement1-455002"
+REGION="europe-west9"
+REPO_NAME="Deployement1"  
+IMAGE_NAME="Deployement"
+IMAGE_TAG="your-tag"
+
+#### Construire et soumettre l'image à Google Artifact Registry
+gcloud builds submit --tag ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG} .
+
+#### Déployer l'image sur Google Cloud Run
+gcloud run deploy --image ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG} --platform managed --region ${REGION}
+

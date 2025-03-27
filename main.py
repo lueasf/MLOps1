@@ -2,6 +2,7 @@ from pydantic import BaseModel
 import numpy as np
 import pandas as pd  
 import joblib  
+import os
 from flask import Flask, request, jsonify
 
 # load the model
@@ -48,4 +49,5 @@ def predict():
         return jsonify({"erreur": str(e)}), 400
     
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 8080))  
+    app.run(host='0.0.0.0', port=port)
